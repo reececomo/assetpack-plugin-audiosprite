@@ -1,0 +1,24 @@
+{
+  "name": "assetpack-plugin-audiosprite",
+  "version": "0.0.1",
+  "description": "AssetPack plugin for generating audio sprites using Audiosprite/FFmpeg",
+  "main": "plugin.js",
+  "author": "Reece Como <reece.como@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "audiosprite": "^0.7.2",
+    "glob-promise": "^6.0.0"
+  },
+  "peerDependencies": {
+    "@assetpack/core": "*"
+  },
+  "keywords": [
+    "assetpack",
+    "audiosprite",
+    "pixi.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reececomo/assetpack-plugin-audiosprite.git"
+  }
+}
