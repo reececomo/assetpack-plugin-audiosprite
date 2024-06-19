@@ -14,7 +14,9 @@ const DEFAULT_IMPORTS_EXTENSIONS = ['aac', 'ac3', 'aiff', 'caf', 'flac', 'mp3', 
  *
  * @example
  * audiosprite: audiosprite({
- *   tag: 'my-custom-tag',
+ *   tags: { audiosprite: 'sfx' },
+ *   imports: ['.wav', '.mp3'],
+ *   nested: false,
  *   audiosprite: {
  *     // Any option that can be passed to Audiosprite can be passed here.
  *     export: 'ogg,m4a,mp3',
@@ -24,18 +26,18 @@ const DEFAULT_IMPORTS_EXTENSIONS = ['aac', 'ac3', 'aiff', 'caf', 'flac', 'mp3', 
  * })
  *
  * @param {Object} [options]
- * @param {string} [options.tag]
- * @param {boolean} [options.nested]
  * @param {string[]} [options.imports]
- *
+ * @param {boolean} [options.nested]
+ * @param {Object} [options.tags]
+ * @param {string} options.tags.audiosprite
  * @param {Object} [options.outputJson]
  * @param {string} [options.outputJson.path]
  * @param {'.json' | string} [options.outputJson.extension]
  * @param {boolean} [options.outputJson.minify]
- * @param {(json: JSON, jsonPath: string, resourcePaths: string[]) => JSON} [options.outputJson.transform]
- *
+ * @param {(jsonData: JSON, jsonPath: string, resourcePaths: string[]) => JSON} [options.outputJson.transform]
  * @param {Object} [options.audiosprite]
- * @param {'jukebox' | 'howler' | 'howler2' | 'createjs'} [options.audiosprite.export]
+ * @param {string} [options.audiosprite.export]
+ * @param {'jukebox' | 'howler' | 'howler2' | 'createjs'} [options.audiosprite.format]
  * @param {any} [options.audiosprite.autoplay]
  * @param {string[]} [options.audiosprite.loop]
  * @param {number} [options.audiosprite.silence]
@@ -54,20 +56,22 @@ const DEFAULT_IMPORTS_EXTENSIONS = ['aac', 'ac3', 'aiff', 'caf', 'flac', 'mp3', 
  */
 function audiosprite(options) {
   const defaultOptions = {
-    tag: 'audiosprite',
-    imports: DEFAULT_IMPORTS_EXTENSIONS,
-    nested: true,
+    tags: {
+      audiosprite: 'audiosprite',
+      ...options?.tags,
+    },
+    imports: options?.imports ?? DEFAULT_IMPORTS_EXTENSIONS,
+    nested: options?.nested ?? true,
     outputJson: {
       path: undefined, // same as output dir unless specified
       extension: '.json',
       minify: false,
       transform: undefined,
+      ...options?.outputJson,
     },
     audiosprite: {
-      // audiosprite overrides:
       output: undefined, // same as output dir unless specified
-
-      // audiosprite defaults:
+      // Audiosprite defaults:
       path: '',
       export: 'ogg,m4a,mp3,ac3',
       format: 'jukebox',
@@ -90,13 +94,17 @@ function audiosprite(options) {
   return {
     name: 'audiosprite',
     folder: true,
-    test: (tree, _p, opts) => hasTag(tree, 'file', opts.tag || defaultOptions.tag),
+
+    test: (tree, _p, opts) => {
+      const opt = { ...defaultOptions.tags, ...opts.tags };
+
+      return hasTag(tree, 'file', opt.audiosprite);
+    },
 
     async transform(tree, processor, opts) {
       const outputPath = processor.inputToOutput(tree.path);
 
       // options
-      const tag = opts.tag || defaultOptions.tag;
       const nested = opts.nested ?? defaultOptions.nested;
       const importsFormats = (opts?.imports ?? defaultOptions.imports).join(',').replace(/\./, '');
       const jsonOpts = { ...defaultOptions.outputJson, ...opts.outputJson };
@@ -150,7 +158,7 @@ function audiosprite(options) {
 
         processor.addToTree({
           tree,
-          transformId: tag,
+          transformId: this.name,
           outputOptions: {
             outputPathOverride: out,
           },
@@ -226,11 +234,6 @@ async function processAudiospriteFiles(files, {
         outputData: JSON.stringify(json, null, jsonOpts.minify ? undefined : 2),
       }
     });
-
-    // rm original, if renamed
-    if (outputPathOverride !== outputPath) {
-      fs.unlinkSync(outputPath);
-    }
 
     outputFilePaths.push(outputPathOverride);
   }

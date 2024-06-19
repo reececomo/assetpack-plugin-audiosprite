@@ -1,6 +1,6 @@
 {
   "name": "assetpack-plugin-audiosprite",
-  "version": "0.0.1",
+  "version": "0.8.0",
   "description": "AssetPack plugin for generating audio sprites using Audiosprite/FFmpeg",
   "main": "plugin.js",
   "author": "Reece Como <reece.como@gmail.com>",

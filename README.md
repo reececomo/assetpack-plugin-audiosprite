@@ -1,13 +1,19 @@
-# assetpack-plugin-audiosprite
+# 🙉 assetpack-plugin-audiosprite [![NPM version](https://img.shields.io/npm/v/assetpack-plugin-audiosprite.svg?style=flat-square)](https://www.npmjs.com/package/assetpack-plugin-audiosprite)
 
 [AssetPack](https://github.com/pixijs/assetpack) plugin for generating audio sprites using [tonistiigi/audiosprite](https://github.com/tonistiigi/audiosprite)
+
+### Install
 
 > [!IMPORTANT]
 > Requires `ffmpeg` to be installed in PATH
 
+```
+npm install assetpack-plugin-audiosprite --save-dev
+```
+
 ### Basic usage
 
-Use the `{audiosprite}` tag to combine a directory of audio files into a single audiosprite.
+Use the `{audiosprite}` tag (or set your own) to combine a directory of audio files into a single audiosprite.
 
 ```js
 // .assetpack.js
@@ -28,7 +34,7 @@ module.exports = {
 ```js
 audiosprite({
   // use a custom tag  (default: 'audiosprite')
-  tag: 'sfx',
+  tags: { audiosprite: 'sfx' },
 
   // whether assets are nested in their namespace "abc/abc.json" (default: true)
   nested: false,
@@ -51,7 +57,6 @@ audiosprite({
     bitrate: 64,
     samplerate: 32_000,
     channels: 1,
-
     // ...
   }
 })
