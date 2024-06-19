@@ -1,17 +1,28 @@
 # 🙉 assetpack-plugin-audiosprite [![NPM version](https://img.shields.io/npm/v/assetpack-plugin-audiosprite.svg?style=flat-square)](https://www.npmjs.com/package/assetpack-plugin-audiosprite)
 
-[AssetPack](https://github.com/pixijs/assetpack) plugin for generating audio sprites using [tonistiigi/audiosprite](https://github.com/tonistiigi/audiosprite)
+[AssetPack](https://github.com/pixijs/assetpack) plugin for generating audio sprites using [audiosprite](https://github.com/tonistiigi/audiosprite).
 
-### Install
-
-> [!IMPORTANT]
-> Requires `ffmpeg` to be installed in PATH
+### Installation
 
 ```
 npm install assetpack-plugin-audiosprite --save-dev
 ```
 
-### Basic usage
+> [!IMPORTANT]
+> Requires `ffmpeg` to be installed in PATH
+
+> [!NOTE]
+> Using a fork of `audiosprite`? Just switch to the `v0.8.0+custom-audiosprite` branch:
+>
+> ```js
+> "devDependencies": {
+>   "assetpack-plugin-audiosprite": "reececomo/assetpack-plugin-audiosprite#v0.8.0+custom-audiosprite",
+>   "audiosprite": "<your fork goes here>",
+>   // ...
+> },
+> ```
+
+## Basic usage
 
 Use the `{audiosprite}` tag (or set your own) to combine a directory of audio files into a single audiosprite.
 
@@ -62,7 +73,7 @@ audiosprite({
 })
 ```
 
-### PixiJS [SoundSprite](https://pixijs.io/sound/docs/SoundSprite.html) example
+## Example - [PixiJS SoundSprite](https://pixijs.io/sound/docs/SoundSprite.html)
 
 Given these files:
 
@@ -89,7 +100,7 @@ mySound.play('cry');
 ```
 
 > [!IMPORTANT]
-> Use `sound` from `@pixi/sound` for features like independent volume control.
+> Combine with the `sound` utility from `@pixi/sound` for features like independent volume control.
 
 ```ts
 import { sound } from '@pixi/sound';
