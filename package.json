@@ -6,10 +6,10 @@
   "author": "Reece Como <reece.como@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "audiosprite": "^0.7.2",
     "glob-promise": "^6.0.0"
   },
   "peerDependencies": {
+    "audiosprite": "*",
     "@assetpack/core": "*"
   },
   "keywords": [
